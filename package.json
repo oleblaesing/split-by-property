@@ -1,0 +1,40 @@
+{
+  "name": "split-by-property",
+  "version": "1.0.0",
+  "description": "Split your arrays by a set of given property checks",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc index.ts",
+    "test": "npm run build && jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oleblaesing/split-by-property.git"
+  },
+  "keywords": [
+    "javascript",
+    "arrays",
+    "reduce"
+  ],
+  "author": "Ole Bläsing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oleblaesing/split-by-property/issues"
+  },
+  "homepage": "https://github.com/oleblaesing/split-by-property#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "jest": "^23.5.0",
+    "pre-commit": "^1.2.2",
+    "typescript": "^3.0.1"
+  },
+  "jest": {
+    "testRegex": "(\\.|/)test\\.js$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ]
+  }
+}
