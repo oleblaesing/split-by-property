@@ -58,4 +58,16 @@ describe('splitByProperty', () => {
       isNumber: [],
     });
   });
+
+  it('works with boolean approval values', () => {
+    const result = splitByProperty([1, 2, 3, 4, 5], value => ({
+      even: value % 2 === 0,
+      odd: value % 2 === 1,
+    }));
+
+    expect(result).toEqual({
+      even: [2, 4],
+      odd: [1, 3, 5],
+    });
+  });
 });
