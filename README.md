@@ -21,10 +21,11 @@ And use it this way:
 ```js
 const arrayToSplit = [4, 0.3, 5, -3.1, 0, 5, 10, -1]
 
-const splittedArray = splitByProperty(arrayToSplit, value => ({
+const splittedArray = splitByProperty(arrayToSplit, (value, i) => ({
   less: () => value < 0,
   equal: () => value === 0,
   more: () => value > 0,
+  evenPosition: () => (i % 2) === 0,
 }));
 
 console.log(splittedArray);
@@ -32,6 +33,7 @@ console.log(splittedArray);
 //   less: [-3.1, -1],
 //   equal: [0],
 //   more: [4, 0.3, 5, 5, 10],
+//   evenPosition: [4, 5, 0, 10],
 // }
 ```
 
