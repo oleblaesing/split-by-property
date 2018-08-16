@@ -1,5 +1,9 @@
+interface ApprovalFunction {
+  (): boolean;
+}
+
 interface ApproveFunctions {
-  [key: string]: () => boolean;
+  [key: string]: ApprovalFunction | boolean;
 }
 
 interface Splitted {
@@ -15,8 +19,9 @@ export default function (items: any[], callback: (item: any, index?: number) => 
     approveFunctions.forEach((key) => {
       const appliedApproveFunctions = callback(item, i);
       const approveFunction = appliedApproveFunctions[key];
+      const approved = typeof approveFunction === 'function' ? approveFunction() : approveFunction;
 
-      if (approveFunction()) {
+      if (approved) {
         acc[key] = acc[key].concat([item]);
       }
     });
