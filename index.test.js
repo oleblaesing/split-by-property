@@ -2,11 +2,11 @@ const splitByProperty = require('./index.js').default;
 
 describe('splitByProperty with boolean revisors', () => {
   it('works with numbers', () => {
-    const result = splitByProperty([4, 0.3, 5, -3.1, 0, 5, 10, -1], value => ({
+    const result = splitByProperty(value => ({
       less: value < 0,
       equal: value === 0,
       more: value > 0,
-    }));
+    }))([4, 0.3, 5, -3.1, 0, 5, 10, -1]);
 
     expect(result).toEqual({
       less: [-3.1, -1],
@@ -16,11 +16,11 @@ describe('splitByProperty with boolean revisors', () => {
   });
 
   it('works with strings', () => {
-    const result = splitByProperty(['', 'hello', 'world', '!', ''], value => ({
+    const result = splitByProperty(value => ({
       empty: value === '',
       character: value.length === 1,
       regular: true,
-    }));
+    }))(['', 'hello', 'world', '!', '']);
 
     expect(result).toEqual({
       empty: ['', ''],
@@ -30,7 +30,7 @@ describe('splitByProperty with boolean revisors', () => {
   });
 
   it('works with arrays', () => {
-    const result = splitByProperty([[9, 10], ['', 'test'], []], (value, i) => {
+    const result = splitByProperty((value, i) => {
       const empty = value.length === 0;
 
       return {
@@ -38,7 +38,7 @@ describe('splitByProperty with boolean revisors', () => {
         numbers: !empty && (value.filter(x => typeof x === 'number').length === value.length),
         even: (i % 2) === 0,
       };
-    });
+    })([[9, 10], ['', 'test'], []]);
 
     expect(result).toEqual({
       empty: [[]],
@@ -48,10 +48,10 @@ describe('splitByProperty with boolean revisors', () => {
   });
 
   it('works with objects', () => {
-    const result = splitByProperty([{ hello: 'world' }, { test: 'asdf' }], value => ({
+    const result = splitByProperty(value => ({
       hasHello: Object.keys(value).findIndex(key => key === 'hello') >= 0,
       isNumber: Object.keys(value).findIndex(key => typeof value[key] === 'number') >= 0,
-    }));
+    }))([{ hello: 'world' }, { test: 'asdf' }]);
 
     expect(result).toEqual({
       hasHello: [{ hello: 'world' }],
@@ -62,11 +62,11 @@ describe('splitByProperty with boolean revisors', () => {
 
 describe('splitByProperty with function revisors', () => {
   it('works with numbers', () => {
-    const result = splitByProperty([4, 0.3, 5, -3.1, 0, 5, 10, -1], value => ({
+    const result = splitByProperty(value => ({
       less: () => value < 0,
       equal: () => value === 0,
       more: () => value > 0,
-    }));
+    }))([4, 0.3, 5, -3.1, 0, 5, 10, -1]);
 
     expect(result).toEqual({
       less: [-3.1, -1],
@@ -76,11 +76,11 @@ describe('splitByProperty with function revisors', () => {
   });
 
   it('works with strings', () => {
-    const result = splitByProperty(['', 'hello', 'world', '!', ''], value => ({
+    const result = splitByProperty(value => ({
       empty: () => value === '',
       character: () => value.length === 1,
       regular: () => true,
-    }));
+    }))(['', 'hello', 'world', '!', '']);
 
     expect(result).toEqual({
       empty: ['', ''],
@@ -90,7 +90,7 @@ describe('splitByProperty with function revisors', () => {
   });
 
   it('works with arrays', () => {
-    const result = splitByProperty([[9, 10], ['', 'test'], []], (value, i) => {
+    const result = splitByProperty((value, i) => {
       const empty = () => value.length === 0;
 
       return {
@@ -98,7 +98,7 @@ describe('splitByProperty with function revisors', () => {
         numbers: () => !empty() && (value.filter(x => typeof x === 'number').length === value.length),
         even: () => (i % 2) === 0,
       };
-    });
+    })([[9, 10], ['', 'test'], []]);
 
     expect(result).toEqual({
       empty: [[]],
@@ -108,10 +108,10 @@ describe('splitByProperty with function revisors', () => {
   });
 
   it('works with objects', () => {
-    const result = splitByProperty([{ hello: 'world' }, { test: 'asdf' }], value => ({
+    const result = splitByProperty(value => ({
       hasHello: () => Object.keys(value).findIndex(key => key === 'hello') >= 0,
       isNumber: () => Object.keys(value).findIndex(key => typeof value[key] === 'number') >= 0,
-    }));
+    }))([{ hello: 'world' }, { test: 'asdf' }]);
 
     expect(result).toEqual({
       hasHello: [{ hello: 'world' }],
