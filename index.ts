@@ -1,31 +1,43 @@
-interface ApprovalFunction {
-  (): boolean;
-}
+type RevisorFunction = () => boolean;
+type Revisor = RevisorFunction | boolean;
+type DiscriminatorSource = { [key: string]: Revisor };
+type DiscriminatorTarget = { [key: string]: any[] };
+type DiscriminatorSourceCreator = (item: any, index?: number) => DiscriminatorSource;
+type RevisorApplier = (result: DiscriminatorTarget, item: any, i: number) => DiscriminatorTarget;
 
-interface ApproveFunctions {
-  [key: string]: ApprovalFunction | boolean;
-}
+function createRevisorApplier(
+  createDiscriminatorSource: DiscriminatorSourceCreator,
+): RevisorApplier {
+  return function (
+    result: DiscriminatorTarget,
+    item: any,
+    i: number,
+  ): DiscriminatorTarget {
+    const discriminatorSource = createDiscriminatorSource(item, i);
+    const discriminatorSourceKeys = Object.keys(discriminatorSource);
 
-interface Splitted {
-  [key: string]: any[];
-}
+    discriminatorSourceKeys.forEach((key) => {
+      if (result[key] === undefined) {
+        result[key] = [];
+      }
 
-export default function (items: any[], callback: (item: any, index?: number) => ApproveFunctions): Splitted {
-  const approveFunctions = Object.keys(callback(null, null));
+      const revisor = discriminatorSource[key];
+      const accepted = typeof revisor === 'function' ? revisor() : revisor;
 
-  const result = approveFunctions.reduce((acc, key) => ({ ...acc, [key]: [] }), {});
-
-  return items.reduce((acc: Splitted, item, i) => {
-    approveFunctions.forEach((key) => {
-      const appliedApproveFunctions = callback(item, i);
-      const approveFunction = appliedApproveFunctions[key];
-      const approved = typeof approveFunction === 'function' ? approveFunction() : approveFunction;
-
-      if (approved) {
-        acc[key] = acc[key].concat([item]);
+      if (accepted) {
+        result[key] = result[key].concat([item]);
       }
     });
 
-    return acc;
-  }, result);
+    return result;
+  }
+}
+
+export default function (
+  items: any[],
+  createDiscriminatorSource: DiscriminatorSourceCreator,
+): DiscriminatorTarget {
+  const applyRevisor = createRevisorApplier(createDiscriminatorSource);
+
+  return items.reduce(applyRevisor, {});
 }

@@ -19,6 +19,23 @@ import splitByProperty from 'split-by-property';
 And use it this way:
 
 ```js
+const arrayToSplit = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const splittedArray = splitByProperty(arrayToSplit, (value, i) => ({
+  even: value % 2 === 0
+  odd: value % 2 === 1,
+}));
+
+console.log(splittedArray);
+// {
+//   even: [2, 4, 6, 8, 10],
+//   odd: [1, 3, 5, 7, 9],
+// }
+```
+
+You can also return an object containing functions as opposed to booleans:
+
+```js
 const arrayToSplit = [4, 0.3, 5, -3.1, 0, 5, 10, -1];
 
 const splittedArray = splitByProperty(arrayToSplit, (value, i) => ({
@@ -34,23 +51,6 @@ console.log(splittedArray);
 //   equal: [0],
 //   more: [4, 0.3, 5, 5, 10],
 //   evenPosition: [4, 5, 0, 10],
-// }
-```
-
-You can also return an object containing booleans as opposed to functions;
-
-```js
-const arrayToSplit = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-const splittedArray = splitByProperty(arrayToSplit, (value, i) => ({
-  even: value % 2 === 0
-  odd: value % 2 === 1,
-}));
-
-console.log(splittedArray);
-// {
-//   even: [2, 4, 6, 8, 10],
-//   odd: [1, 3, 5, 7, 9],
 // }
 ```
 
