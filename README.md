@@ -1,5 +1,9 @@
 # split-by-property
 
+[![npm license](https://img.shields.io/npm/v/split-by-property.svg)]()
+[![npm downloads total](https://img.shields.io/npm/dt/split-by-property.svg)]()
+[![npm license](https://img.shields.io/npm/l/split-by-property.svg)]()
+
 Split your arrays by a set of given property checks. It runs through your array just once! 🙃
 
 ## Getting Started
