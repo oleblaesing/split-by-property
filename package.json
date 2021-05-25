@@ -1,6 +1,6 @@
 {
   "name": "split-by-property",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Split your arrays by a set of given property checks",
   "main": "index.js",
   "scripts": {
