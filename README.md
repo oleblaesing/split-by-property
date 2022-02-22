@@ -1,3 +1,5 @@
+Note: Array grouping will become native in ECMAScript soon: https://github.com/tc39/proposal-array-grouping.
+
 # split-by-property
 
 [![npm license](https://img.shields.io/npm/v/split-by-property.svg)]()
